@@ -10,11 +10,17 @@ import UIKit
 
 class ToDoListViewController: UITableViewController {
 
-    let itemArray = ["Купить чай", "Позвонить Алексею", "Сделать ToDoList"]
+    var itemArray = ["Купить чай", "Позвонить Алексею", "Сделать ToDoList"]
+    
+    let defaults = UserDefaults.standard
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view, typically from a nib.
+        
+        if let items = defaults.array(forKey: "ToDoListArray") as? [String] {
+            itemArray = items
+        }
+        
     }
 
     //MARK - Описание таблицы VC
@@ -42,5 +48,35 @@ class ToDoListViewController: UITableViewController {
         
         tableView.deselectRow(at: indexPath, animated: true)
     }
+    
+    //MARK - добавление новой задачи
+    
+    @IBAction func addButtonPressed(_ sender: UIBarButtonItem) {
+        
+        var textField = UITextField()
+        
+        let alert = UIAlertController(title: "Добавление задачи", message: "", preferredStyle: .alert)
+        
+        let action = UIAlertAction(title: "Добавить", style: .default) { (action) in
+            // что будет если пользовтаель нажмет на кнопку
+            
+            self.itemArray.append(textField.text!)
+            
+            //запись данных в память для сохранения
+            self.defaults.set(self.itemArray, forKey: "ToDoListArray")
+            
+            self.tableView.reloadData()
+        }
+        
+        alert.addTextField { (alertTextField) in
+            alertTextField.placeholder = "Напомни мне о"
+            textField = alertTextField
+        }
+        
+        alert.addAction(action)
+        
+        present(alert, animated: true, completion: nil)
+    }
+    
 }
 
