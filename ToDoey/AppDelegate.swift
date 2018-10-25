@@ -19,9 +19,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         print("Приложение успешно выполнело загрузку/запуск")
         
-        // выводит место расположение симулятора и приложения для получания доступа к файлам через браузер компьютера
-        print(NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true).last! as String)
-        
         return true
     }
 
